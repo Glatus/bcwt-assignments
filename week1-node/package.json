@@ -1,0 +1,23 @@
+{
+  "dependencies": {
+    "express": "^4.18.2",
+    "lodash": "^4.17.21"
+  },
+  "name": "node1",
+  "version": "1.0.0",
+  "description": "test",
+  "main": "script.js",
+  "scripts": {
+    "start": "nodemon script.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Glatus/bcwt-assignments.git"
+  },
+  "author": "Jani Pudas",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Glatus/bcwt-assignments/issues"
+  },
+  "homepage": "https://github.com/Glatus/bcwt-assignments#readme"
+}

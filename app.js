@@ -1,11 +1,12 @@
 const express = require('express')
 const app = express()
+const pug = require('pug');
 const port = 3000
 
-// Serve static files from the public folder
+
 app.use(express.static('public'))
 
-// Serve the index.pug template as the home page
+
 app.get('/', (req, res) => {
   res.render('index')
 })

@@ -9,9 +9,7 @@ router.get('/', (req, res) => {
 
 router.get('/cat', controller.getCatList)
 //Tietty kissa
-router.get('/cat/:id', (req,res) => {
-  res.send(`You reqested a cat whose id is ${req.params.id}`);
-});
+router.get('/cat/:id', controller.getCat);
 // POST
 router.post('/cat', (req, res) => {
   res.send("With this endpoint you can add cats.")

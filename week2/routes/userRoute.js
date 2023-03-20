@@ -8,9 +8,7 @@ router.get('/', controller.getUserList);
 //Tietty käyttäjä
 router.get('/:id', controller.getUser);
 // POST
-router.post('/', (req, res) => {
-  res.send("With this endpoint you can add users.")
-});
+router.post('/', controller.postUser);
 
 // PUT
 router.put('/', (req, res) => {

@@ -7,7 +7,7 @@ router.get('/', (req, res) => {
   res.send("Test");
 });
 
-router.get('/cat', controller.getCatList)
+router.get('/cat', controller.getCatList);
 //Tietty kissa
 router.get('/cat/:id', controller.getCat);
 // POST

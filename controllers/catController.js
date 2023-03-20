@@ -5,7 +5,7 @@ const catModel = require('../models/catModel');
 const cats = catModel.cats;
 
 const getCatList = (req,res) => {
-    res.json(cats)
+    res.json(cats);
 };
 const getCat = (req,res) => {
     res.json(cats.filter(cat => cat.id === req.params.id) )

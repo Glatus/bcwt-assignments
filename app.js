@@ -1,5 +1,6 @@
 'use strict';
 const express = require('express');
+const { cats } = require('./models/catModel');
 const app = express();
 const port = 3000;
 app.get('/', (req, res) => {
@@ -8,6 +9,10 @@ app.get('/', (req, res) => {
 
 app.get('/cat', (req, res) => {
   res.send('From this endpoint you can get cats.')
+});
+//Tietty kissa
+app.get('/cat/:id', (req,res) => {
+  res.send(`You reqested a cat whose id is ${req.params.id}`);
 });
 // POST
 app.post('/cat', (req, res) => {

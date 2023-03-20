@@ -8,9 +8,8 @@ const getCatList = (req,res) => {
     res.json(cats);
 };
 const getCat = (req,res) => {
-    res.json(cats.filter(cat => cat.id === req.params.id) )
-    console.log(req);
-}
+    res.json(cats.filter(cat => cat.id === req.params.id))
+};
 module.exports = {
     getCatList,getCat
 };

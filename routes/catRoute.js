@@ -3,25 +3,22 @@ const express = require('express');
 // catRoute
 const router = express.Router();
 const controller = require('../controllers/catController')
-router.get('/', (req, res) => {
-  res.send("Test");
-});
 
-router.get('/cat', controller.getCatList);
+router.get('/', controller.getCatList);
 //Tietty kissa
-router.get('/cat/:id', controller.getCat);
+router.get('/:id', controller.getCat);
 // POST
-router.post('/cat', (req, res) => {
+router.post('/', (req, res) => {
   res.send("With this endpoint you can add cats.")
 });
 
 // PUT
-router.put('/cat', (req, res) => {
+router.put('/', (req, res) => {
   res.send("With this endpoint you can edit cats.")
 });
 
 // DELETE
-router.delete('/cat', (req, res) => {
+router.delete('/', (req, res) => {
   res.send("With this endpoint you can delete cats.")
 });
 module.exports = router

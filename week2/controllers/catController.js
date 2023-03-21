@@ -10,6 +10,9 @@ const getCatList = (req,res) => {
 const getCat = (req,res) => {
     res.json(cats.filter(cat => cat.id === req.params.id))
 };
+const postCat = (req,res) => {
+    console.log(req.file, req.body);
+}
 module.exports = {
-    getCatList,getCat
+    getCatList,getCat,postCat
 };

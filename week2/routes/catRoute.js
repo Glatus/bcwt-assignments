@@ -18,6 +18,7 @@ const upload = multer({ storage })
 const controller = require('../controllers/catController')
 
 router.get('/', controller.getCatList);
+
 //Tietty kissa
 router.get('/:id', controller.getCat);
 // POST

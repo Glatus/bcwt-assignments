@@ -8,7 +8,7 @@ router.get('/', controller.getUserList);
 //Tietty käyttäjä
 router.get('/:id', controller.getUser);
 // POST
-router.post('/', controller.postUser);
+router.post('/', controller.user_create_post, controller.postUser);
 
 // PUT
 router.put('/', (req, res) => {

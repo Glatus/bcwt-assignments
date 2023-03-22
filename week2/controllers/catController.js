@@ -2,17 +2,58 @@
 // catController
 const catModel = require('../models/catModel');
 
+
 const cats = catModel.cats;
 
-const getCatList = (req,res) => {
-    res.json(cats);
+const getCatList = async (req, res) => {
+    try {
+        const cats = await catModel.getAllCats();
+        res.json(cats);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+    }
 };
-const getCat = (req,res) => {
-    res.json(cats.filter(cat => cat.id === req.params.id))
+
+const getCat = async (req, res) => {
+    try {
+        const cat = await catModel.getCat(req.params.id);
+        res.json(cat);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+    }
 };
-const postCat = (req,res) => {
-    console.log(req.file, req.body);
+
+
+const postCat = async (req, res) => {
+      console.log(req.body);
+}
+const cat_create_post = async (req,res) => {
+    try {
+      catModel.addCat(req)
+    } catch (error) {
+      console.error(error);
+      res.status(500).send('Internal Server Error')
+    }
+  };
+const cat_update_put = async (req,res) => {
+    try {
+        catModel.updateCat(req.body)
+    } catch (error) {
+        console.error(error);
+      res.status(500).send('Internal Server Error')
+    }
+}
+const cat_delete = async (req,res) => {
+    
+    try {
+        catModel.deleteCat(req.body)
+    } catch (error) {
+        console.error(error);
+      res.status(500).send('Internal Server Error')
+    }
 }
 module.exports = {
-    getCatList,getCat,postCat
+    getCatList, getCat, postCat, cat_create_post, cat_update_put, cat_delete
 };

@@ -8,6 +8,7 @@ const cats = catModel.cats;
 const getCatList = async (req, res) => {
     try {
         const cats = await catModel.getAllCats();
+        console.log(cats);
         res.json(cats);
     } catch (error) {
         console.error(error);
@@ -46,9 +47,9 @@ const cat_update_put = async (req,res) => {
     }
 }
 const cat_delete = async (req,res) => {
-    
     try {
-        catModel.deleteCat(req.body)
+        catModel.deleteCat(req.params.id)
+        res.json({message: 'Cat deleted!'})
     } catch (error) {
         console.error(error);
       res.status(500).send('Internal Server Error')

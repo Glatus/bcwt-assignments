@@ -17,8 +17,9 @@ const getCat = async (id) => {
   const response = await fetch(url + '/cat/' + id);
   const cat = await response.json();
   const inputs = modForm.querySelectorAll('input');
+  console.log(cat);
   inputs[0].value = cat[0].name;
-  inputs[1].value = cat[0].birthdate.substring;
+  inputs[1].value = cat[0].birthdate.substring(0,10);
   inputs[2].value = cat[0].weight;
   inputs[3].value = cat[0].cat_id;
   modForm.querySelector('select').value = cat.owner;

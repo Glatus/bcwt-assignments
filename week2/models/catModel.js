@@ -73,9 +73,10 @@ const updateCat = async(cat) => {
     return;
   }
 }
-const deleteCat = async(cat) => {
+const deleteCat = async(id) => {
   try {
-    const [result] = await pool.query('DELETE FROM wop_cat WHERE cat_id=?', [ cat.id ]);
+    const [result] = await pool.query('DELETE FROM wop_cat WHERE cat_id=?', [ id ]);
+    console.log(`Cat ${getCat(id).name} deleted!`);
     return result
   } catch (e) {
     console.error("error", e.message)

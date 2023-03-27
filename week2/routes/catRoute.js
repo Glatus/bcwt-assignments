@@ -3,6 +3,7 @@ const express = require('express');
 // catRoute
 const router = express.Router();
 const multer  = require('multer')
+const { body, validationResult } = require('express-validator');
 // piettää kuvalle vanhan nimen
 const storage = multer.diskStorage({
   destination: function (req, file, callback) {
@@ -22,7 +23,33 @@ router.get('/', controller.getCatList);
 //Tietty kissa
 router.get('/:id', controller.getCat);
 // POST
-router.post('/', upload.single('cat'), controller.cat_create_post, controller.postCat);
+router.post('/', 
+  upload.single('cat'), // Multer middleware for uploading the file
+  // Express-validator middleware for validating the request body
+  
+    body('name').isLength({ min: 3 }).withMessage('Name must be at least 3 characters'),
+    body('birthdate').isISO8601().withMessage('Invalid birthdate'),
+    body('weight').isNumeric().withMessage('Weight must be a number'),
+    body('owner').notEmpty().withMessage('Owner is required'),
+    body('cat').custom((value, { req }) => {
+      if (!req.file) {
+        throw new Error('File is required');
+      } else if (!['image/png', 'image/jpeg', 'image/gif'].includes(req.file.mimetype)) {
+        throw new Error('Invalid file type');
+      } else {
+        return true;
+      }
+    }),
+  (req, res) => {
+    console.log(req);
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      
+      return res.status(400).json({ errors: errors.array() });
+    }
+    controller.cat_create_post(req, res);
+  }
+);
 // PUT
 router.put('/', controller.cat_update_put)
 // DELETE

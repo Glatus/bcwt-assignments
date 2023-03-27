@@ -1,7 +1,6 @@
 'use strict';
 // userController
 const userModel = require('../models/userModel');
-
 const users = userModel.users;
 
 const getUserList = async (req, res) => {
@@ -29,7 +28,7 @@ const getUser = async (req, res) => {
   };
 const user_create_post = async (req,res) => {
   try {
-    userModel.addUser(req)
+    userModel.addUser(req.body)
   } catch (error) {
     console.error(error);
     res.status(500).send('Internal Server Error')

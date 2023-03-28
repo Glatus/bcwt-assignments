@@ -63,9 +63,9 @@ modForm.addEventListener('submit', async (evt) => {
     },
     body: JSON.stringify(data),
   };
-
-  console.log(fetchOptions);
+  console.log(url + '/cat', fetchOptions);
   const response = await fetch(url + '/cat', fetchOptions);
+  console.log(response);
   const json = await response.json();
   alert(json.message);
   location.href = 'front.html';

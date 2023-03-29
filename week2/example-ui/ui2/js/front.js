@@ -1,5 +1,5 @@
 'use strict';
-const url = 'https://testiserverxd.northeurope.cloudapp.azure.com/'; // change url when uploading to server
+const url = 'https://testiserverxd.northeurope.cloudapp.azure.com/app/'; // change url when uploading to server
 
 // select existing html elements
 const ul = document.querySelector('#list');

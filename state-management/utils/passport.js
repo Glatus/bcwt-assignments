@@ -1,0 +1,81 @@
+'use strict';
+const passport = require("passport");
+const Strategy = require("passport-local").Strategy;
+// fake database: ****************
+const users = [
+    {
+        user_id: 1,
+        name: "Foo Bar",
+        email: "foo@bar.fi",
+        password: "foobar",
+    },
+    {
+        user_id: 2,
+        name: "Bar Foo",
+        email: "bar@foo.fi",
+        password: "barfoo",
+    },
+];
+// *******************
+
+// fake database functions *********
+const getUser = (id) => {
+    const user = users.filter((usr) => {
+        if (usr.user_id === id) {
+            return usr;
+        }
+    });
+    return user[0];
+};
+
+const getUserLogin = (email) => {
+    const user = users.filter((usr) => {
+        if (usr.email === email) {
+            return usr;
+        }
+    });
+    return user[0];
+};
+// *****************
+
+// serialize: store user id in session
+passport.serializeUser((user, done) => {
+    console.log("serialize", user);
+    done(null, user);
+});
+
+
+
+// deserialize: get user id from session and get all user data
+passport.deserializeUser(async (id, done) => {
+    try {
+        // get user data by id from getUser
+        const user = getUser(id);
+        console.log("deserialize", user);
+        // deserialize user by adding it to 'done()' callback
+        done(null, user);
+    } catch (error) {
+        done(error);
+    }
+});
+
+const localStrategy = new Strategy((username, password, done) => {
+    // get user by username from getUserLogin
+    const user = getUserLogin(username);
+    // if user is undefined
+    // if passwords dont match
+    if (!user || user.password !== password) {
+        // return done(null, false);
+        return done(null, false);
+        // if all is ok
+    } else {
+        return done(null, user.user_id);
+        // return done(null, user.user_id);
+    }
+});
+
+// export passport, getUserLogin and localStrategy
+module.exports = {
+    passport,
+    localStrategy
+};

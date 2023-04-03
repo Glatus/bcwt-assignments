@@ -1,0 +1,7 @@
+{
+    "prettier.bracketSameLine": true,
+    "prettier.useTabs": true,
+    "javascript.inlayHints.parameterTypes.enabled": true,
+    "typescript.suggest.completeFunctionCalls": true,
+    "editor.formatOnSave": true
+}

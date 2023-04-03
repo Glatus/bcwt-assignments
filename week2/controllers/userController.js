@@ -1,4 +1,4 @@
-'use strict';
+ 'use strict';
 // userController
 const userModel = require('../models/userModel');
 

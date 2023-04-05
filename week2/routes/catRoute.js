@@ -44,8 +44,7 @@ router.post('/',
       return res.status(400).json({ errors: errors.array() });
     }
     controller.cat_create_post(req, res);
-  }
-);
+  });
 // Muokkaa kissaa
 router.put('/', body('name').isAlpha().isLength({ min: 3 }).withMessage('Name must be at least 3 characters').trim().escape(),
   body('birthdate').isISO8601().withMessage('Invalid birthdate'),

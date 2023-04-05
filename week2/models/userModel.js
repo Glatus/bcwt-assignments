@@ -48,5 +48,5 @@ const getUserLogin = async (params) => {
 };
 
 module.exports = {
-  users, getUser, getAllUsers, addUser, getUserLogin
+  getUser, getAllUsers, addUser, getUserLogin
 };

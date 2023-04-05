@@ -1,13 +1,12 @@
 'use strict';
 const express = require('express');
-const passport = require('passport')
 // userRoute
 const router = express.Router();
 const controller = require('../controllers/userController')
+
 router.get('/', controller.getUserList);
 //Tietty käyttäjä
-router.get('/:id',passport.authenticate('jwt', {session: false}), controller.getUser);
-router.get("/token",controller.checkToken)
+router.get('/:id', controller.getUser);
 // POST
 router.post('/', controller.user_create_post, controller.postUser);
 

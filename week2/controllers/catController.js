@@ -26,6 +26,7 @@ const getCat = async (req, res) => {
     }
 };
 
+
 const postCat = async (req, res) => {
       console.log(req.body);
 }

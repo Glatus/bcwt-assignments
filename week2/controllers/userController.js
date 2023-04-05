@@ -35,9 +35,6 @@ const user_create_post = async (req,res) => {
     res.status(500).send('Internal Server Error')
   }
 };
-const checkToken = (req, res) => {
-  res.json({user: req.user});
-};
 module.exports = {
-    getUserList,getUser,postUser,user_create_post,checkToken
+    getUserList,getUser,postUser,user_create_post
 };

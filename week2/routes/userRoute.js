@@ -7,6 +7,7 @@ const controller = require('../controllers/userController')
 router.get('/', controller.getUserList);
 //Tietty käyttäjä
 router.get('/:id',passport.authenticate('jwt', {session: false}), controller.getUser);
+router.get("/token",controller.checkToken)
 // POST
 router.post('/', controller.user_create_post, controller.postUser);
 

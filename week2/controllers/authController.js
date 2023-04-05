@@ -15,7 +15,7 @@ const login = (req, res) => {
              res.send(err);
          }
          // generate a signed JSON web token with the contents of user object and return it in the response
-         const token = jwt.sign(user, 'YOURSECRETKEYGOESHERE');
+         const token = jwt.sign(user, process.env.JWT_KEY);
          return res.json({user, token});
       });
     })(req, res);

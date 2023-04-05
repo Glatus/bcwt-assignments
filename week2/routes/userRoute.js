@@ -1,5 +1,6 @@
 'use strict';
 const express = require('express');
+const passport = require('passport')
 // userRoute
 const router = express.Router();
 const controller = require('../controllers/userController');
@@ -7,7 +8,8 @@ const { body, validationResult } = require('express-validator');
 
 router.get('/', controller.getUserList);
 //Tietty käyttäjä
-router.get('/:id', controller.getUser);
+router.get('/:id', passport.authenticate('jwt', { session: false }), controller.getUser);
+router.get("/token", controller.checkToken)
 // POST
 router.post('/', body('name').isAlpha().isLength({ min: 3 }).withMessage('Name must be at least 3 characters').trim().escape(),
   body("passwd").isLength({ min: 8 }).withMessage('Name must be at least 8 characters').trim().escape(),

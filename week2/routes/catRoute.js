@@ -1,5 +1,6 @@
 'use strict';
 const express = require('express');
+const passport = require('passport');
 // catRoute
 const router = express.Router();
 const multer = require('multer');
@@ -18,7 +19,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 const controller = require('../controllers/catController');
 
-router.get('/', controller.getCatList);
+router.get('/', passport.authenticate('jwt', { session: false }), controller.getCatList);
 
 //Hakee tietyn kissan
 router.get('/:id', controller.getCat);

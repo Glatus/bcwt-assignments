@@ -4,7 +4,7 @@ const passport = require('passport');
 require('dotenv').config();
 
 const login = (req, res, next) => {
-    passport.authenticate('local', { session: false }, (err, user, info) => {
+    passport.authenticate("local", { session: false }, (err, user, info) => {
         if (err || !user) {
             console.log('auth error', info);
             return res.status(401).json({
@@ -25,7 +25,6 @@ const login = (req, res, next) => {
         });
     })(req, res, next);
 };
-
 module.exports = {
     login,
 };

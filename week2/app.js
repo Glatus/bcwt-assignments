@@ -5,7 +5,7 @@ const passport = require('passport');
 const authRoute = require('./routes/authRoute');
 const catRouter = require('./routes/catRoute.js');
 const userRouter = require('./routes/userRoute.js');
-
+require('./utils/passport');
 const app = express();
 const port = 3000;
 

@@ -1,6 +1,6 @@
 "use strict";
 const passport = require("passport");
-const Strategy = require("passport-local").Strategy;
+const LocalStrategy = require("passport-local").Strategy;
 const { getUserLogin, getUser } = require("../models/userModel");
 const JWTStrategy = require('passport-jwt').Strategy;
 const ExtractJWT = require('passport-jwt').ExtractJwt;
@@ -8,7 +8,7 @@ require("dotenv").config();
 
 // local strategy for username password login
 passport.use(
-    new Strategy(async (email, password, done) => {
+    new LocalStrategy(async (email, password, done) => {
         try {
             const [user] = await getUserLogin(email);
             console.log("Local strategy", user); // result is binary row

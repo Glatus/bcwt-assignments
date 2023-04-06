@@ -12,11 +12,6 @@ app.use((req, res, next) => {
     console.log(Date.now() + ': request: ' + req.method + ' ' + req.path);
     next();
 });
-app.use(session({
-    secret: process.env.jWT_KEY,
-    resave: false,
-    saveUninitialized: false
-}));
 // Serve example-ui
 app.use(express.static('example-ui'));
 // Serve uploaded image files

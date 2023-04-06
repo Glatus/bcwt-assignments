@@ -18,8 +18,12 @@ app.use((req, res, next) => {
 app.use(session({
     secret: process.env.jWT_KEY,
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: false,
+    // Configure session store here
 }));
+app.use(passport.initialize());
+app.use(passport.session());
+
 // Serve example-ui
 app.use(express.static('example-ui'));
 // Serve uploaded image files
@@ -30,8 +34,6 @@ app.use(cors());
 // middleware for parsing request body
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(passport.initialize());
-app.use(passport.session());
 
 app.use('/auth', authRoute);
 app.use('/cat', passport.authenticate('jwt', { session: false }), catRoute);

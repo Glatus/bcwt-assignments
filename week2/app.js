@@ -1,12 +1,9 @@
 'use strict';
 const express = require('express');
-const session = require('express-session');
-const cors = require('cors');
-const catRoute = require('./routes/catRoute');
-const userRoute = require('./routes/userRoute');
-const authRoute = require('./routes/authRoute');
-const passport = require('./utils/passport');
-
+var cors = require('cors')
+const { cats } = require('./models/catModel');
+const catRouter = require('./routes/catRoute.js')
+const userRouter = require('./routes/userRoute.js');
 const app = express();
 const port = 3000;
 
@@ -34,9 +31,9 @@ app.use(cors());
 // middleware for parsing request body
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-app.use('/auth', authRoute);
-app.use('/cat', passport.authenticate('jwt', { session: false }), catRoute);
-app.use('/user', passport.authenticate('jwt', { session: false }), userRoute);
-
+app.use("/", express.static("example-ui"))
+app.use("/uploads/", express.static("uploads"))
+app.use(cors())
+app.use("/cat", catRouter);
+app.use("/user", userRouter);
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));

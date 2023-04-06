@@ -1,7 +1,6 @@
 'use strict';
 // userController
 const userModel = require('../models/userModel');
-const users = userModel.users;
 
 const getUserList = async (req, res) => {
   try {
@@ -16,7 +15,7 @@ const getUserList = async (req, res) => {
 const postUser = async (req, res) => {
   console.log(req.body);
   res.redirect("http://localhost:52330/week2/example-ui/ui1/front.html");
-}
+};
 const getUser = async (req, res) => {
   try {
     const user = await userModel.getUser(req.params.id);
@@ -28,10 +27,10 @@ const getUser = async (req, res) => {
 };
 const user_create_post = async (req, res) => {
   try {
-    userModel.addUser(req.body)
+    userModel.addUser(req.body);
   } catch (error) {
     console.error(error);
-    res.status(500).send('Internal Server Error')
+    res.status(500).send('Internal Server Error');
   }
 };
 const checkToken = (req, res) => {

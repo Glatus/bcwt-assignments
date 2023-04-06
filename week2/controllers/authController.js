@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const passport = require('passport');
 require('dotenv').config();
 
-const login = (req, res) => {
+const login = (req, res, next) => {
     passport.authenticate('local', { session: false }, (err, user, info) => {
         if (err || !user) {
             console.log('auth error', info);
@@ -23,9 +23,9 @@ const login = (req, res) => {
             // NOTE: at least password should removed
             return res.json({ user, token });
         });
-    })(req, res);
+    })(req, res, next);
 };
 
 module.exports = {
-    login
+    login,
 };

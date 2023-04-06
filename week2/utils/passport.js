@@ -1,7 +1,7 @@
 "use strict";
 const passport = require("passport");
 const Strategy = require("passport-local").Strategy;
-const { getUserLogin, getUserById } = require("../models/userModel");
+const { getUserLogin, getUser } = require("../models/userModel");
 const JWTStrategy = require('passport-jwt').Strategy;
 const ExtractJWT = require('passport-jwt').ExtractJwt;
 require("dotenv").config();
@@ -32,13 +32,13 @@ passport.use(
 passport.use(
     new JWTStrategy({
         jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
-        secretOrKey: process.env.jWT_KEY,
+        secretOrKey: process.env.JWT_KEY,
     },
         async (jwtPayload, done) => {
             //find the user in db if needed. This functionality may be omitted if you store everything you'll need in JWT payload.
             console.log('user from token', jwtPayload);
             try {
-                const user = await getUserById(jwtPayload.user_id);
+                const user = await getUser(jwtPayload.user_id);
                 return done(null, user);
             } catch (err) {
                 return done(err);

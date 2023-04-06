@@ -22,14 +22,13 @@ const controller = require('../controllers/catController');
 router.get('/', passport.authenticate('jwt', { session: false }), controller.getCatList);
 
 //Hakee tietyn kissan
-router.get('/:id', controller.getCat);
+router.get('/:id', passport.authenticate('jwt', { session: false }), controller.getCat);
 // POST
-router.post('/',
+router.post('/', passport.authenticate('jwt', { session: false }),
   upload.single('cat'),
   body('name').isAlpha().isLength({ min: 3 }).withMessage('Name must be at least 3 characters').trim().escape(),
   body('birthdate').isISO8601().withMessage('Invalid birthdate'),
   body('weight').isNumeric().withMessage('Weight must be a number'),
-  body('owner').notEmpty().withMessage('Owner is required'),
   body('cat').custom((value, { req }) => {
     if (!req.file) {
       throw new Error('File is required');
@@ -47,6 +46,7 @@ router.post('/',
     controller.cat_create_post(req, res);
   }
 );
+
 // Muokkaa kissaa
 router.put('/', body('name').isAlpha().isLength({ min: 3 }).withMessage('Name must be at least 3 characters').trim().escape(),
   body('birthdate').isISO8601().withMessage('Invalid birthdate'),

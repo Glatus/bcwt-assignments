@@ -4,7 +4,8 @@ const { validationResult } = require('express-validator');
 
 const getCatList = async (req, res) => {
     try {
-        let cats = await catModel.getAllCats();
+        const ownerId = req.user.id;
+        let cats = await catModel.getAllCatsByOwnerId(ownerId);
         // convert ISO date to date only
         // should this be done on the front-end side??
         cats = cats.map((cat) => {
@@ -68,34 +69,48 @@ const postCat = async (req, res) => {
 };
 
 const cat_update_put = async (req, res) => {
-    // console.log('modifying a cat', req.body);
-    const validationErrors = validationResult(req);
-    if (!validationErrors.isEmpty()) {
-        res.status(400).json({
-            status: 400,
-            errors: validationErrors.array(),
-            message: 'Invalid PUT data'
-        });
-        return;
-    }
-    const cat = req.body;
-    // TODO: before modifying a cat you should check that user is the owner of
-    // that specific cat (req.user.user_id == cat.owner). Can be done in catModel!
+    const { id } = req.params.owner;
+    const { name, weight, birthdate } = req.body;
+    const owner = req.user.id; // assuming the user id is stored in req.user.id
+
     try {
-        const result = await catModel.modifyCat(cat);
-        res.status(200).json({ message: 'cat modified!' });
-    } catch (error) {
-        res.status(500).json({ error: 500, message: error.message });
+        let result;
+        if (req.user.role == 0) {
+            result = await catModel.updateCatAdmin({ id, name, weight, birthdate });
+        } else {
+            result = await catModel.updateCat({ id, name, weight, owner, birthdate });
+        }
+
+        if (result.affectedRows > 0) {
+            res.status(200).send(`Cat with id ${id} updated successfully`);
+        } else {
+            res.status(404).send(`Cat with id ${id} not found`);
+        }
+    } catch (e) {
+        console.error(e);
+        res.status(500).send("Error updating cat");
     }
 };
 
 const cat_delete = async (req, res) => {
-    // console.log('deleting a cat', req.params.id);
+    const { id } = req.params.owner;
+
     try {
-        const result = await catModel.deleteCat(req.params.id);
-        res.status(200).json({ message: 'cat deleted!' });
-    } catch (error) {
-        res.status(500).json({ error: 500, message: error.message });
+        let result;
+        if (req.user.isAdmin) {
+            result = await catModel.deleteCatAdmin(id);
+        } else {
+            result = await catModel.deleteCat(id, req.user.id);
+        }
+
+        if (result.affectedRows > 0) {
+            res.status(200).send(`Cat with id ${id} deleted successfully`);
+        } else {
+            res.status(404).send(`Cat with id ${id} not found`);
+        }
+    } catch (e) {
+        console.error(e);
+        res.status(500).send("Error deleting cat");
     }
 };
 

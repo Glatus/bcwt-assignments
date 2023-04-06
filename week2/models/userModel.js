@@ -1,7 +1,6 @@
 'use strict';
 const pool = require('../database/db');
 
-
 const getAllUsers = async () => {
   try {
     const [users] = await pool.query(`SELECT user_id, name, email, role FROM wop_user`);

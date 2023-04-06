@@ -39,7 +39,17 @@ const getUserLogin = async (params) => {
     console.log('getUserLogin params:', params);
     const [rows] = await pool.execute(
       'SELECT * FROM wop_user WHERE email = ?;',
-      params);
+      [params]);
+    console.log('getUserLogin rows:', rows);
+    return rows;
+  } catch (e) {
+    console.log('getUserLogin error:', e.message);
+  }
+};
+const getAllLogins = async () => {
+  try {
+    const [rows] = await pool.execute(
+      'SELECT * FROM wop_user;');
     console.log('getUserLogin rows:', rows);
     return rows;
   } catch (e) {
@@ -49,5 +59,5 @@ const getUserLogin = async (params) => {
 
 
 module.exports = {
-  getUser, getAllUsers, addUser, getUserLogin
+  getUser, getAllUsers, addUser, getUserLogin, getAllLogins
 };

@@ -19,11 +19,13 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 const controller = require('../controllers/catController');
 
+//Hakee kaikki kissat
 router.get('/', passport.authenticate('jwt', { session: false }), controller.getCatList);
 
 //Hakee tietyn kissan
 router.get('/:id', passport.authenticate('jwt', { session: false }), controller.getCat);
-// POST
+
+// Lisää kissan
 router.post('/', passport.authenticate('jwt', { session: false }),
   upload.single('cat'),
   body('name').isAlpha().isLength({ min: 3 }).withMessage('Name must be at least 3 characters').trim().escape(),
@@ -48,10 +50,11 @@ router.post('/', passport.authenticate('jwt', { session: false }),
 );
 
 // Muokkaa kissaa
-router.put('/', body('name').isAlpha().isLength({ min: 3 }).withMessage('Name must be at least 3 characters').trim().escape(),
+router.put('/:id', body('name').isAlpha().isLength({ min: 3 }).withMessage('Name must be at least 3 characters').trim().escape(),
   body('birthdate').isISO8601().withMessage('Invalid birthdate'),
-  body('weight').isNumeric().withMessage('Weight must be a number'), body('owner').notEmpty().withMessage('Owner is required'),
+  body('weight').isNumeric().withMessage('Weight must be a number'),
   (req, res) => {
+    console.log("UPDATE", req.body);
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });

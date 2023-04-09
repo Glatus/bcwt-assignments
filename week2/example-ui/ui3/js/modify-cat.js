@@ -17,9 +17,10 @@ const userList = document.querySelector('.add-owner');
 
 // get user data for admin check
 const user = JSON.parse(sessionStorage.getItem('user'));
+console.log(user);
 
 // if user is not admin delete owner selection
-if (user.role > 0) userList.remove();
+if (user[0].role > 0) userList.remove();
 
 // add existing cat data to form
 const getCat = async (id) => {
@@ -32,9 +33,9 @@ const getCat = async (id) => {
   const cat = await response.json();
   const inputs = modForm.querySelectorAll('input');
   inputs[0].value = cat.name;
-  inputs[1].value = cat.birthdate;
+  inputs[1].value = cat.birthdate.substring(0, 10);
   inputs[2].value = cat.weight;
-  if (user.role === 0) modForm.querySelector('select').value = cat.owner;
+  if (user[0].role === 0) modForm.querySelector('select').value = cat.owner;
 };
 
 // create user options to <select>
@@ -68,7 +69,6 @@ const getUsers = async () => {
     console.log(e.message);
   }
 };
-
 // submit modify form
 modForm.addEventListener('submit', async (evt) => {
   evt.preventDefault();
@@ -87,8 +87,6 @@ modForm.addEventListener('submit', async (evt) => {
     },
     body: JSON.stringify(data),
   };
-
-  console.log(fetchOptions);
   const response = await fetch(url + '/cat/' + cat_id, fetchOptions);
   const json = await response.json();
   if (json.error) {
@@ -96,11 +94,11 @@ modForm.addEventListener('submit', async (evt) => {
   } else {
     alert(json.message);
   }
-  location.href = 'front.html';
+  //location.href = 'front.html';
 });
 
 // start filling the form
-if (user.role === 0) {
+if (user[0].role === 0) {
   getUsers(); // if admin
 } else {
   getCat(cat_id); // if regular user

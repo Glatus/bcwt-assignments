@@ -5,7 +5,7 @@ const userModel = require('../models/userModel');
 const getUserList = async (req, res) => {
   try {
     const users = await userModel.getAllUsers();
-    console.log(users);
+    //console.log(users);
     res.json(users);
   } catch (error) {
     console.error(error);

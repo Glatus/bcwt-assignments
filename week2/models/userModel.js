@@ -20,7 +20,6 @@ const getUser = async (id) => {
   }
 };
 const addUser = async (user) => {
-  console.log(user);
   try {
     const [result] = await pool.query('INSERT INTO wop_user (name, email, password, role) VALUES (?, ?, ?, 0)', [
       user.name,
@@ -36,28 +35,17 @@ const addUser = async (user) => {
 
 const getUserLogin = async (params) => {
   try {
-    console.log('getUserLogin params:', params);
+    //console.log('getUserLogin params:', params);
     const [rows] = await pool.execute(
       'SELECT * FROM wop_user WHERE email = ?;',
       [params]);
-    console.log('getUserLogin rows:', rows);
+    //console.log('getUserLogin rows:', rows);
     return rows;
   } catch (e) {
     console.log('getUserLogin error:', e.message);
   }
 };
-const getAllLogins = async () => {
-  try {
-    const [rows] = await pool.execute(
-      'SELECT * FROM wop_user;');
-    console.log('getUserLogin rows:', rows);
-    return rows;
-  } catch (e) {
-    console.log('getUserLogin error:', e.message);
-  }
-};
-
 
 module.exports = {
-  getUser, getAllUsers, addUser, getUserLogin, getAllLogins
+  getUser, getAllUsers, addUser, getUserLogin
 };

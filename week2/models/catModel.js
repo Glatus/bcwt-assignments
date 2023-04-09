@@ -1,23 +1,21 @@
 'use strict';
 const pool = require('../database/db');
-const getAllCats = async (req) => {
+const getAllCats = async () => {
   try {
-    const ownerId = req.user.user_id;
-    const [cats] = await pool.query(`
-      SELECT c.cat_id, c.name,c.weight,c.filename, c.birthdate,c.owner, u.name AS ownername
-      FROM wop_cat AS c
-      LEFT JOIN wop_user AS u
-      ON c.owner = u.user_id
-      WHERE c.owner = ?
-    `, [ownerId]);
-    return cats;
+    const sql = `SELECT wop_cat.*, wop_user.name AS ownername FROM wop_cat
+                LEFT JOIN wop_user ON wop_cat.owner = wop_user.user_id`;
+    const [rows] = await pool.query(sql);
+    console.log(rows);
+    return rows;
   } catch (e) {
-    console.error("error", e.message);
+    console.error('error', e.message);
+    throw new Error('sql query failed');
   }
 };
 
 
 const getCat = async (id) => {
+  console.log(id);
   try {
     const [cat] = await pool.query('SELECT * FROM wop_cat WHERE cat_id = ?', [id]);
     return cat;
@@ -28,59 +26,68 @@ const getCat = async (id) => {
 };
 
 
-const addCat = async (cat) => {
+const addCat = async (cat, userId) => {
+  console.log(cat.filename);
   try {
     const [result] = await pool.query('INSERT into wop_cat (name, weight, owner, filename, birthdate) VALUES (?, ?, ?, ?, ?)', [
-      cat.body.name,
-      cat.body.weight,
-      cat.body.owner,
-      cat.file.filename,
-      cat.body.birthdate
+      cat.name,
+      cat.weight,
+      userId,
+      cat.filename,
+      cat.birthdate
     ]);
     return result;
   } catch (e) {
-    console.error("error", e.message);
+    console.error("error", cat);
     return;
   }
 };
-const updateCat = async (cat, userId, isAdmin) => {
+const updateCat = async (cat, catId, user) => {
+  let sql;
+  const values = [
+    cat.name,
+    cat.weight,
+    user.role === 0 ? cat.owner : user.user_id,
+    cat.birthdate,
+    catId
+  ];
+  console.log(values);
+  if (user.role === 0) {
+    sql = `UPDATE wop_cat SET name=?, weight=?, owner=?, birthdate=?
+      WHERE cat_id=?`;
+  } else {
+    sql = `UPDATE wop_cat SET name=?, weight=?, owner=?, birthdate=?
+      WHERE cat_id=? AND owner=?`;
+    values.push(user.user_id);
+  }
   try {
-    let query;
-    if (isAdmin) {
-      query = 'UPDATE wop_cat SET name=?, weight=?, owner=?, birthdate=? WHERE cat_id=?';
-    } else {
-      query = 'UPDATE wop_cat SET name=?, weight=?, birthdate=? WHERE cat_id=? AND owner=?';
-    }
-    const [result] = await pool.query(query, [
-      cat.name,
-      cat.weight,
-      cat.birthdate,
-      cat.id,
-      userId,
-    ]);
-    return result;
+    const [rows] = await pool.execute(sql, values);
+    console.log(rows);
+    return rows;
   } catch (e) {
-    console.error("error", e.message);
-    return;
+    console.error('error', e.message);
+    throw new Error('sql update cat failed');
   }
 };
 
-const deleteCat = async (id, userId, isAdmin) => {
+const deleteCat = async (id, userId, userRole) => {
+  let sql;
+  if (userRole === 0) {
+    sql = `DELETE FROM wop_cat WHERE cat_id=?`;
+  } else {
+    sql = `DELETE FROM wop_cat WHERE cat_id=? AND owner=?`;
+  }
   try {
-    let query;
-    if (isAdmin) {
-      query = 'DELETE FROM wop_cat WHERE cat_id=?';
-    } else {
-      query = 'DELETE FROM wop_cat WHERE cat_id=? AND owner=?';
-    }
-    const [result] = await pool.query(query, [id, userId]);
-    console.log(`Cat ${getCat(id).name} deleted!`);
-    return result;
+    const [rows] = await pool.query(sql, [id, userId]);
+    console.log(rows);
+    return rows;
   } catch (e) {
-    console.error("error", e.message);
-    return;
+    console.error('error', e.message);
+    throw new Error('sql delete cat failed');
   }
 };
+
+
 
 module.exports = {
   getCat, getAllCats, addCat, updateCat, deleteCat

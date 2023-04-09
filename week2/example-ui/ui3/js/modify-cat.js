@@ -94,7 +94,7 @@ modForm.addEventListener('submit', async (evt) => {
   } else {
     alert(json.message);
   }
-  //location.href = 'front.html';
+  location.href = 'front.html';
 });
 
 // start filling the form

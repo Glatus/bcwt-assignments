@@ -50,7 +50,7 @@ const createCatCards = (cats) => {
     li.appendChild(p2);
     li.appendChild(p3);
     ul.appendChild(li);
-    if (user.role === 0 || user.user_id === cat.owner) {
+    if (user[0].role === 0 || user[0].user_id === cat.owner) {
       // link to modify form
       const modButton = document.createElement('a');
       modButton.innerHTML = 'Modify';

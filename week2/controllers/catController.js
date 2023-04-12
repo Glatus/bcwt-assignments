@@ -1,7 +1,7 @@
 'use strict';
 const catModel = require('../models/catModel');
 const { validationResult } = require('express-validator');
-const { makeThumbnail } = require('../utils/image');
+const { makeThumbnail, getCoordinates } = require('../utils/image');
 
 const getCatList = async (req, res) => {
     try {
@@ -55,7 +55,13 @@ const cat_create_post = async (req, res) => {
     const userId = req.user[0].user_id;
     newCat.filename = req.file.filename;
     newCat.owner = userId;
+    // make thumbnail
     await makeThumbnail(req.file.path, newCat.filename);
+    // get coordinates
+    if (req.file.mimetype === ".jpeg") {
+        newCat.coords = await getCoordinates(req.file.path);
+        console.log('coords', newCat.coords);
+    }
     try {
         await catModel.addCat(newCat, userId);
         res.status(201).json({ message: 'new cat added!' });

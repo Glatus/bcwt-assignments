@@ -27,14 +27,15 @@ const getCat = async (id) => {
 
 
 const addCat = async (cat, userId) => {
-  console.log(cat.filename);
+  console.log("Adding Cat: ", cat);
   try {
-    const [result] = await pool.query('INSERT into wop_cat (name, weight, owner, filename, birthdate) VALUES (?, ?, ?, ?, ?)', [
+    const [result] = await pool.query('INSERT INTO wop_cat (name, weight, owner, filename, birthdate, coords) VALUES (?, ?, ?, ?, ?, ?);', [
       cat.name,
       cat.weight,
       userId,
       cat.filename,
-      cat.birthdate
+      cat.birthdate,
+      cat.coords ?? "[24.74, 60.24]"
     ]);
     return result;
   } catch (e) {
@@ -42,6 +43,7 @@ const addCat = async (cat, userId) => {
     return;
   }
 };
+
 const updateCat = async (cat, catId, user) => {
   let sql;
   const values = [

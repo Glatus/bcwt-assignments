@@ -45,7 +45,15 @@ const createCatCards = (cats) => {
   cats.forEach((cat) => {
     // create li with DOM methods
     const img = document.createElement('img');
-    img.src = url + '/thumbnails/' + cat.filename;
+    if (cat.filename.includes("placekitten.com")) {
+      img.src = cat.filename;
+    } else {
+      img.src = url + '/thumbnails/' + cat.filename;
+    } if (cat.filename.includes("placekitten.com")) {
+      img.src = cat.filename;
+    } else {
+      img.src = url + '/thumbnails/' + cat.filename;
+    }
     img.alt = cat.name;
     img.classList.add('resp');
 
@@ -58,7 +66,7 @@ const createCatCards = (cats) => {
         const coords = JSON.parse(cat.coords);
         // console.log(coords);
         addMarker(coords);
-      } catch (e) {}
+      } catch (e) { }
     });
 
     const figure = document.createElement('figure').appendChild(img);

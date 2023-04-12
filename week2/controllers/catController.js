@@ -1,6 +1,7 @@
 'use strict';
 const catModel = require('../models/catModel');
 const { validationResult } = require('express-validator');
+const { makeThumbnail } = require('../utils/image');
 
 const getCatList = async (req, res) => {
     try {
@@ -59,7 +60,8 @@ const cat_create_post = async (req, res) => {
     const newCat = req.body;
     const userId = req.user[0].user_id;
     newCat.filename = req.file.filename;
-    // TODO: use req.user to add correct owner id
+    newCat.owner = userId;
+    await makeThumbnail(req.file.path, newCat.filename);
     try {
         await catModel.addCat(newCat, userId);
         res.status(201).json({ message: 'new cat added!' });

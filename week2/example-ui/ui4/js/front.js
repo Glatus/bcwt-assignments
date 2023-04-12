@@ -14,7 +14,11 @@ const createCatCards = (cats) => {
   cats.forEach((cat) => {
     // create li with DOM methods
     const img = document.createElement('img');
-    img.src = url + '/thumbnails/' + cat.filename;
+    if (cat.filename.includes("placekitten.com")) {
+      img.src = cat.filename;
+    } else {
+      img.src = url + '/thumbnails/' + cat.filename;
+    }
     img.alt = cat.name;
     img.classList.add('resp');
 

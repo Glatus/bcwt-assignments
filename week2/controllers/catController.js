@@ -6,12 +6,6 @@ const { makeThumbnail } = require('../utils/image');
 const getCatList = async (req, res) => {
     try {
         let cats = await catModel.getAllCats();
-        // convert ISO date to date only
-        // should this be done on the front-end side??
-        cats = cats.map((cat) => {
-            cat.birthdate = cat.birthdate.toISOString().split('T')[0];
-            return cat;
-        });
         res.json(cats);
     } catch (error) {
         res.status(500).json({ error: 500, message: error.message });

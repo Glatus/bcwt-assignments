@@ -58,6 +58,7 @@ const user_create_post = async (req, res) => {
   }
 };
 const checkToken = (req, res) => {
+  console.log(req);
   res.json({ user: req.user });
 };
 module.exports = {

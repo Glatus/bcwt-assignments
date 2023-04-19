@@ -18,10 +18,6 @@ app.use((req, res, next) => {
 app.use(express.static('example-ui'));
 // Serve uploaded image files
 app.use('/uploads', express.static('uploads'));
-// Add 'Access-Control-Allow-Origin: *' header to all
-// responses using cors middleware
-app.use(cors());
-// middleware for parsing request body
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/", express.static("example-ui"));

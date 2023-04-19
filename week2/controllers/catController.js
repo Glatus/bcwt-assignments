@@ -11,7 +11,7 @@ const getCatList = async (req, res) => {
         res.status(500).json({ error: 500, message: error.message });
     }
 };
-
+//Hakee kissan
 const getCat = async (req, res) => {
     //console.log(req.params);
     // convert id value to number
